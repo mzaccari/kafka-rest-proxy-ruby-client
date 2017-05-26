@@ -1,0 +1,170 @@
+---
+swagger: '2.0'
+info:
+  version: 0.1.0
+  title: Kafka REST Proxy API
+  description: |
+    An initial draft of the [Kafka REST Proxy API](https://github.com/confluentinc/kafka-rest).
+
+    ## Example JSON request
+
+
+    ```
+    POST /topics/test HTTP/1.1
+    Host: kafkaproxy.example.com
+    Content-Type: application/vnd.kafka.json.v2+json
+    Accept: application/vnd.kafka.v2+json, application/vnd.kafka+json, application/json
+    {
+      "records": [
+        {
+          "key": "somekey",
+          "value": {"foo": "bar"}
+        },
+        {
+          "value": [ "foo", "bar" ],
+          "partition": 1
+        },
+        {
+          "value": 53.5
+        }
+      ]
+    }
+    ```
+
+    ## Example JSON response
+
+    ```
+    HTTP/1.1 200 OK
+    Content-Type: application/vnd.kafka.v2+json
+    {
+      "key_schema_id": null,
+      "value_schema_id": null,
+      "offsets": [
+        {
+          "partition": 2,
+          "offset": 100
+        },
+        {
+          "partition": 1,
+          "offset": 101
+        },
+        {
+          "partition": 2,
+          "offset": 102
+        }
+      ]
+    }
+    ```
+tags:
+  - name: Producer
+
+consumes:
+ - application/vnd.kafka.v2+json
+ - application/vnd.kafka+json
+ - application/json
+
+produces:
+ - application/vnd.kafka.v2+json
+ - application/vnd.kafka+json
+ - application/json
+
+
+parameters:
+  topic_name:
+    name: topic_name
+    in: path
+    description: Name of the topic to produce the messages to
+    type: string
+    required: true
+
+paths:
+  /topics/{topic_name}:
+    post:
+      tags:
+        - Producer
+      description: |
+        Produce messages to a topic, optionally specifying keys or partitions for the messages. If no partition is provided, one will be chosen based on the hash of the key. If no key is provided, the partition will be chosen for each message in a round-robin fashion.
+
+        #
+
+        For the ``avro`` embedded format, you must provide information about schemas and the REST proxy must be configured with the URL to access the schema registry (``schema.registry.connect``). Schemas may be provided as the full schema encoded as a string, or, after the initial request may be provided as the schema ID returned with the first response.
+      responses:
+        200:
+          description: Successfully produced data to the kafka topic.
+          schema:
+            $ref: '#/definitions/ProducerResponse'
+        404:
+          description: |
+            * Error code 40401
+              * Topic not found.
+        422:
+          description: |
+            * Error code 42201
+              * Request includes keys and uses a format that requires schemas, but does not include the ``key_schema`` or ``key_schema_id`` fields.
+            * Error code 42202
+              * Request includes values and uses a format that requires schemas, but does not include the ``value_schema`` or ``value_schema_id`` fields.
+            * Error code 42205
+              * Request includes invalid schema.
+
+      parameters:
+        - $ref: '#/parameters/topic_name'
+        - name: body
+          in: body
+          description: Data to send to the kafka topic.
+          required: true
+          schema:
+            $ref: '#/definitions/ProducerRequest'
+
+definitions:
+  ProducerRequest:
+    type: object
+    properties:
+      records:
+        type: array
+        items:
+          $ref: '#/definitions/Record'
+      key_schema:
+        type: string
+      key_schema_id:
+        type: integer
+      value_schema:
+        type: string
+      value_schema_id:
+        type: integer
+
+  ProducerResponse:
+    type: object
+    properties:
+      offsets:
+        type: array
+        items:
+          $ref: '#/definitions/Offset'
+      key_schema_id:
+        type: integer
+      value_schema_id:
+        type: integer
+
+  Record:
+    type: object
+    properties:
+      key:
+        type: object
+      value:
+        type: object
+      partition:
+        type: integer
+
+  Offset:
+    type: object
+    properties:
+      partition:
+        type: integer
+      offset:
+        type: integer
+      error_code:
+        type: integer
+      error:
+        type: string
+
+
+    
