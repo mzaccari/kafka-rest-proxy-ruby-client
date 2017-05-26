@@ -78,7 +78,7 @@ gem install ./kafka_rest_proxy_client-1.0.0.gem
 
 ### Install from Git
 
-    gem 'kafka_rest_proxy_client', git: 'https://github.com/mzaccari/kafka-rest-proxy-ruby-client'
+    gem 'kafka_rest_proxy_client', git: 'https://github.com/mzaccari/kafka-rest-proxy-ruby-client.git'
 
 
 ## Getting Started
