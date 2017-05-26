@@ -21,7 +21,7 @@ module KafkaProxyRestClient
       @config = config
       @user_agent = "Swagger-Codegen/#{VERSION}/ruby"
       @default_headers = {
-        'Content-Type' => "application/json",
+        'Content-Type' => "application/vnd.kafka.json.v2+json",
         'User-Agent' => @user_agent
       }
     end
@@ -115,6 +115,8 @@ module KafkaProxyRestClient
 
     # Check if the given MIME is a JSON MIME.
     # JSON MIME examples:
+    #   application/vnd.kafka.json.v2+json
+    #   application/vnd.kafka+json
     #   application/json
     #   application/json; charset=UTF8
     #   APPLICATION/JSON
@@ -122,7 +124,7 @@ module KafkaProxyRestClient
     # @param [String] mime MIME
     # @return [Boolean] True if the MIME is application/json
     def json_mime?(mime)
-       (mime == "*/*") || !(mime =~ /\Aapplication\/json(;.*)?\z/i).nil?
+       (mime == "*/*") || !(mime =~ /\Aapplication\/(.*)?json(;.*)?\z/i).nil?
     end
 
     # Deserialize the response to the given return type.
@@ -301,8 +303,9 @@ module KafkaProxyRestClient
     def select_header_accept(accepts)
       return nil if accepts.nil? || accepts.empty?
       # use JSON when present, otherwise use all of the provided
-      json_accept = accepts.find { |s| json_mime?(s) }
-      return json_accept || accepts.join(',')
+      # json_accept = accepts.find { |s| json_mime?(s) }
+      # return json_accept || accepts.join(',')
+      accepts.join(', ')
     end
 
     # Return Content-Type header based on an array of content types provided.

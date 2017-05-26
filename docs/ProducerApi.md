@@ -51,8 +51,8 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/vnd.kafka.v2+json, application/vnd.kafka+json, application/json
- - **Accept**: application/vnd.kafka.v2+json, application/vnd.kafka+json, application/json
+ - **Content-Type**: application/vnd.kafka.json.v2+json, application/vnd.kafka+json, application/json
+ - **Accept**: application/vnd.kafka.json.v2+json, application/vnd.kafka+json, application/json
 
 
 

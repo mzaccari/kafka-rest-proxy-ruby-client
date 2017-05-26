@@ -43,9 +43,9 @@ module KafkaProxyRestClient
       # header parameters
       header_params = {}
       # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['application/vnd.kafka.v2+json', 'application/vnd.kafka+json', 'application/json'])
+      header_params['Accept'] = @api_client.select_header_accept(['application/vnd.kafka.json.v2+json', 'application/vnd.kafka.v1+json', 'application/vnd.kafka+json', 'application/json'])
       # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/vnd.kafka.v2+json', 'application/vnd.kafka+json', 'application/json'])
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/vnd.kafka.json.v2+json', 'application/vnd.kafka.v1+json', 'application/vnd.kafka+json', 'application/json'])
 
       # form parameters
       form_params = {}

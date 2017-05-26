@@ -13,7 +13,7 @@ info:
     POST /topics/test HTTP/1.1
     Host: kafkaproxy.example.com
     Content-Type: application/vnd.kafka.json.v2+json
-    Accept: application/vnd.kafka.v2+json, application/vnd.kafka+json, application/json
+    Accept: application/vnd.kafka.json.v2+json, application/vnd.kafka+json, application/json
     {
       "records": [
         {
@@ -35,7 +35,7 @@ info:
 
     ```
     HTTP/1.1 200 OK
-    Content-Type: application/vnd.kafka.v2+json
+    Content-Type: application/vnd.kafka.json.v2+json
     {
       "key_schema_id": null,
       "value_schema_id": null,
@@ -59,12 +59,14 @@ tags:
   - name: Producer
 
 consumes:
- - application/vnd.kafka.v2+json
+ - application/vnd.kafka.json.v2+json
+ - application/vnd.kafka.v1+json
  - application/vnd.kafka+json
  - application/json
 
 produces:
- - application/vnd.kafka.v2+json
+ - application/vnd.kafka.json.v2+json
+ - application/vnd.kafka.v1+json
  - application/vnd.kafka+json
  - application/json
 
@@ -165,6 +167,3 @@ definitions:
         type: integer
       error:
         type: string
-
-
-    

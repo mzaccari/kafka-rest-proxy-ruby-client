@@ -10,7 +10,7 @@ An initial draft of the [Kafka REST Proxy API](https://github.com/confluentinc/k
 POST /topics/test HTTP/1.1
 Host: kafkaproxy.example.com
 Content-Type: application/vnd.kafka.json.v2+json
-Accept: application/vnd.kafka.v2+json, application/vnd.kafka+json, application/json
+Accept: application/vnd.kafka.json.v2+json, application/vnd.kafka+json, application/json
 {
   "records": [
     {
@@ -32,7 +32,7 @@ Accept: application/vnd.kafka.v2+json, application/vnd.kafka+json, application/j
 
 ```
 HTTP/1.1 200 OK
-Content-Type: application/vnd.kafka.v2+json
+Content-Type: application/vnd.kafka.json.v2+json
 {
   "key_schema_id": null,
   "value_schema_id": null,
